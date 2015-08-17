@@ -9,7 +9,7 @@ trait Constants {
   val led6 = "led6"
   val led7 = "led7"
 
-  val port: String = "/dev/tty"
+  val port: String = "/dev/ttymxc3"
 
   private val baud: Int = 115200
   private val characterSize: Int = 8
