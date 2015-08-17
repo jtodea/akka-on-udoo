@@ -1,8 +1,10 @@
 int led5 = 5;
 int led6 = 6;
 int led7 = 7;
-char val = '0';
 
+String content = "";
+char character;
+  
 void setup() {
   Serial.begin(115200);
   
@@ -15,24 +17,35 @@ void setup() {
   digitalWrite(led7, LOW);
 }
 
+void readFromSerial() {
+  if(Serial.available() >= 4) {
+   content = "";
+   for (int i=0; i < 4; i++)  {
+     character = Serial.read();
+     content.concat(character);
+   }
+  }
+}
+
 void loop() {
-  val = Serial.read();
+  readFromSerial();
+  Serial.println(content);
   
-  if(val == 'led5') {
+  if(content == "led5") {
     digitalWrite(led5, HIGH);
     digitalWrite(led6, LOW);
     digitalWrite(led7, LOW);
   }
   
-  if(val == 'led6') {
+  if(content == "led6") {
     digitalWrite(led6, HIGH);
     digitalWrite(led5, LOW);
     digitalWrite(led7, LOW);
   }  
   
-  if(val == 'led7') {
+  if(content == "led7") {
     digitalWrite(led7, HIGH);
     digitalWrite(led6, LOW);
     digitalWrite(led5, LOW);
-  }  
+  }
 }
