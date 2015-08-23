@@ -2,8 +2,8 @@ int led5 = 5;
 int led6 = 6;
 int led7 = 7;
 
-String content = "";
-char character;
+int len = 4;
+char input[4];
   
 void setup() {
   Serial.begin(115200);
@@ -17,19 +17,14 @@ void setup() {
   digitalWrite(led7, LOW);
 }
 
-void readFromSerial() {
-  if(Serial.available() >= 4) {
-   content = "";
-   for (int i=0; i < 4; i++)  {
-     character = Serial.read();
-     content.concat(character);
-   }
-  }
+String readBytesFromSerial() {
+  Serial.readBytes(input, len);
+  return String(input);
 }
 
 void loop() {
-  readFromSerial();
-  Serial.println(content);
+  String content = readBytesFromSerial();
+  Serial.print(content);
   
   if(content == "led5") {
     digitalWrite(led5, HIGH);
