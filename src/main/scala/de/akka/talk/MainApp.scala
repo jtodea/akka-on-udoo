@@ -3,12 +3,10 @@ package de.akka.talk
 import java.util.logging.{Level, Logger}
 
 import akka.actor.ActorSystem
-import akka.io.IO
-import com.github.jodersky.flow.Serial
-import de.akka.talk.led.{Led7Actor, Led5Actor, Led6Actor}
-import de.akka.talk.serial.SerialActor
 import de.akka.talk.led.LedMessages._
-import de.akka.talk.serial.SerialMessages.OpenSerialConnection
+import de.akka.talk.led.{Led5Actor, Led6Actor, Led7Actor}
+import de.akka.talk.serial.SerialActor
+import de.akka.talk.serial.SerialMessages.{CloseSerialConnection, OpenSerialConnection}
 
 
 object MainApp extends App with Constants {
@@ -19,12 +17,8 @@ object MainApp extends App with Constants {
   implicit val system = ActorSystem("UdooActorSystem")
   logger.log(Level.INFO, "started actor system")
 
-  logger.log(Level.INFO, "init io serial")
-  val serialIoRef = IO(Serial)
-  logger.log(Level.INFO, "init end of io serial")
-
   logger.log(Level.INFO, "creating serial actor")
-  val serialActor = system.actorOf(SerialActor(port, settings, serialIoRef))
+  val serialActor = system.actorOf(SerialActor(port, settings))
   logger.log(Level.INFO, "end creating serial actor")
 
   logger.log(Level.INFO, "creating led actors")
@@ -35,9 +29,15 @@ object MainApp extends App with Constants {
 
   serialActor ! OpenSerialConnection()
 
-  while (true) {
-    led5Actor ! SendLed5()
-    led6Actor ! SendLed6()
-    led7Actor ! SendLed7()
-  }
+  Thread.sleep(3000)
+
+  led5Actor ! SendLed5()
+  led6Actor ! SendLed6()
+  led7Actor ! SendLed7()
+
+  Thread.sleep(3000)
+
+  serialActor ! CloseSerialConnection()
+
+  system.shutdown()
 }
