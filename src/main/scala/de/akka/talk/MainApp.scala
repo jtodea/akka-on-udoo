@@ -29,15 +29,23 @@ object MainApp extends App with Constants {
 
   serialActor ! OpenSerialConnection()
 
+  logger.log(Level.INFO, "starting serial")
   Thread.sleep(3000)
 
   led5Actor ! SendLed5()
-  led6Actor ! SendLed6()
-  led7Actor ! SendLed7()
+  logger.log(Level.INFO, "send 5")
+  Thread.sleep(3000)
 
+  led6Actor ! SendLed6()
+  logger.log(Level.INFO, "send 6")
+  Thread.sleep(3000)
+
+  led7Actor ! SendLed7()
+  logger.log(Level.INFO, "send 7")
   Thread.sleep(3000)
 
   serialActor ! CloseSerialConnection()
+  logger.log(Level.INFO, "closing serial")
 
   system.shutdown()
 }

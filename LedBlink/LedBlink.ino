@@ -2,11 +2,10 @@ int led5 = 5;
 int led6 = 6;
 int led7 = 7;
 
-String content = "";
-char character;
+char content;
   
 void setup() {
-  Serial.begin(115200);
+  Serial.begin(9600);
   
   pinMode(led5, OUTPUT);
   pinMode(led6, OUTPUT);
@@ -18,36 +17,41 @@ void setup() {
 }
 
 void readFromSerial() {
-  if(Serial.available() >= 4) {
-   for (int i=0; i < 4; i++)  {
-     character = Serial.read();
-     content.concat(character);
+  if(Serial.available() > 0) {
+     content = Serial.read();
    }
   }
 }
 
 void loop() {
-  content = "";
   readFromSerial();
   
-  if(content == "led5") {
+  if(content == '5') {
     Serial.print(content);
     digitalWrite(led5, HIGH);
     digitalWrite(led6, LOW);
     digitalWrite(led7, LOW);
   }
   
-  if(content == "led6") {
+  if(content == '6') {
     Serial.print(content);
     digitalWrite(led6, HIGH);
     digitalWrite(led5, LOW);
     digitalWrite(led7, LOW);
   }  
   
-  if(content == "led7") {
+  if(content == '7') {
     Serial.print(content);
     digitalWrite(led7, HIGH);
     digitalWrite(led6, LOW);
     digitalWrite(led5, LOW);
   }
+
+  if(content = '0') {
+    Serial.print("Shutdown");
+    digitalWrite(led7, LOW);
+    digitalWrite(led6, LOW);
+    digitalWrite(led5, LOW);
+  }
+
 }

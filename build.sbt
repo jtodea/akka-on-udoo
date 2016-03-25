@@ -18,8 +18,8 @@ libraryDependencies ++= {
     "junit" % "junit" % "4.12" % "test",
     "com.novocode" % "junit-interface" % "0.11" % "test",
 
-    "com.github.jodersky" % "flow_2.11" % flowV
-    //"com.github.jodersky" % "flow-native" % flowV % "runtime"
+    "com.github.jodersky" % "flow_2.11" % flowV,
+    "com.github.jodersky" % "flow-native" % flowV % "runtime"
   )
 }
 
